@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Лина, у меня к тебе вопрос</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#2b1233;--card:#fff3ee;--ink:#2b1233;--pink:#ff7a9c;--lemon:#ffe27a;--muted:#6d4a74;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d0b24;--card:#fff3ee;--ink:#2b1233}}
+:root[data-theme="dark"]{--bg:#1d0b24;--card:#fff3ee;--ink:#2b1233}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);font-family:Manrope,system-ui,sans-serif;color:var(--ink);display:flex;align-items:center;justify-content:center;padding:20px;overflow:hidden}
+.ticket{position:relative;width:100%;max-width:400px;background:var(--card);border-radius:28px;padding:36px 28px 32px;text-align:center;box-shadow:0 0 0 6px var(--pink)}
+.ticket::before,.ticket::after{content:"";position:absolute;top:58%;width:28px;height:28px;border-radius:50%;background:var(--bg)}
+.ticket::before{left:-14px}.ticket::after{right:-14px}
+.heart{font-size:44px;display:inline-block;animation:beat 1.4s ease-in-out infinite}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.2)}30%{transform:scale(1)}}
+h1{font-family:Unbounded,system-ui,sans-serif;font-weight:700;font-size:clamp(24px,7vw,32px);line-height:1.2;margin:14px 0 10px}
+p{margin:0 0 6px;line-height:1.55;color:var(--muted);font-size:16px}
+.tear{border:0;border-top:2px dashed var(--pink);margin:26px -6px 24px}
+.btns{position:relative;height:120px}
+button{font:600 17px Manrope,system-ui,sans-serif;border:0;border-radius:999px;padding:15px 30px;cursor:pointer;min-width:120px}
+button:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+#yes{background:var(--pink);color:#fff;font-size:20px;padding:17px 40px;transition:transform .15s}
+#yes:active{transform:scale(.95)}
+#no{background:var(--lemon);color:var(--ink);position:absolute;left:50%;top:70px;transform:translateX(-50%);transition:left .25s,top .25s}
+#ok{display:none}[hidden]{display:none!important}
+.done #ask{display:none}.done #ok{display:block}
+#ok .heart{font-size:56px}
+@media (prefers-reduced-motion:reduce){.heart{animation:none}}
+</style>
+</head>
+<body>
+<main class="ticket" id="card">
+  <div id="ask">
+    <span class="heart" aria-hidden="true">💌</span>
+    <h1>Лина, пойдём на свидание?</h1>
+    <p>Время и место уже выбраны. С тебя только хорошее настроение.</p>
+    <hr class="tear">
+    <div class="btns" id="btns">
+      <button id="yes">Да</button>
+      <button id="no">Нет</button>
+    </div>
+  </div>
+  <div id="ok">
+    <span class="heart" aria-hidden="true">💖</span>
+    <h1>Ура! Договорились</h1>
+    <p>Свидание будет необычным, поэтому нужна подготовка к нему.</p>
+    <button id="more" style="margin-top:18px;background:var(--pink);color:#fff">Узнать детали</button>
+    <div id="details" hidden>
+      <hr class="tear">
+      <p style="color:var(--ink);font-weight:600">В пятницу 09.10 в 17:45 такси будет у твоего дома.</p>
+      <p>Для начала нужно собрать наряд для свидания: комфортный и удобный.</p>
+      <p>Само свидание пройдёт в субботу с утра и до позднего вечера, поэтому я заберу у тебя весь день.</p>
+      <p>Будет очень насыщенный и интересный день. Оно того стоит.</p>
+    </div>
+  </div>
+</main>
+<script>
+var no=document.getElementById('no'),box=document.getElementById('btns'),n=0;
+var lines=['Нет','Точно?','Подумай ещё','Ну пожалуйста','Попробуй «Да»'];
+function dodge(e){
+  if(e)e.preventDefault();
+  var w=box.clientWidth-no.offsetWidth,h=box.clientHeight-no.offsetHeight;
+  no.style.transform='none';
+  no.style.left=Math.random()*w+'px';
+  no.style.top=Math.random()*h+'px';
+  n++;no.textContent=lines[Math.min(n,lines.length-1)];
+}
+no.addEventListener('mouseenter',dodge);
+no.addEventListener('touchstart',dodge,{passive:false});
+no.addEventListener('click',dodge);
+document.getElementById('yes').addEventListener('click',function(){document.getElementById('card').classList.add('done')});
+document.getElementById('more').addEventListener('click',function(){this.hidden=true;document.getElementById('details').hidden=false});
+</script>
+</body>
+</html>
